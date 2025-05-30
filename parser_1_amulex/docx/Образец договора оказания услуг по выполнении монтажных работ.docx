@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <title>Амулекс - сайт недоступен</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge"/>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="MobileOptimized" content="320"/>
+    <meta name="HandheldFriendly" content="true"/>
+    <style>
+        html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, font, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        b, u, i, center,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,
+        table, caption, tbody, tfoot, thead, tr, th, td, input {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            vertical-align: baseline;
+            background: transparent;
+            font-size: 100%;
+        }
+
+        body {
+            background-color: #F7F7F7;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            font-family: "PT Sans", Arial, sans-serif;
+        }
+
+        .background--desktop {
+            padding: 32px;
+        }
+
+        .background--mobile {
+            display: none;
+            max-height: 100vh;
+            justify-content: center;
+        }
+
+        @media screen and (max-width: 640px) {
+            .background--desktop {
+                display: none;
+            }
+
+            .background--mobile {
+                display: flex;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+<div class="main">
+    <div class="container">
+        <div class="background background--desktop">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="auto" viewBox="0 0 1196 819">
+                <g transform="translate(-362 -42)">
+                    <rect width="1196" height="125" rx="16" transform="translate(362 736)" fill="#fff"/>
+                    <path d="M16,4A12,12,0,0,0,4,16v93a12,12,0,0,0,12,12H1180a12,12,0,0,0,12-12V16a12,12,0,0,0-12-12H16m0-4H1180a16,16,0,0,1,16,16v93a16,16,0,0,1-16,16H16A16,16,0,0,1,0,109V16A16,16,0,0,1,16,0Z"
+                          transform="translate(362 736)" fill="#ededed"/>
+                    <g transform="translate(0 50)">
+                        <rect width="242" height="56" rx="8" transform="translate(410 540)" fill="#e6e6e6"/>
+                        <rect width="56" height="56" rx="8" transform="translate(664 540)" fill="#e6e6e6"/>
+                    </g>
+                    <path d="M32,0H318a32,32,0,0,1,32,32V533a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V32A32,32,0,0,1,32,0Z"
+                          transform="translate(1088 203)" fill="#ededed"/>
+                    <g transform="translate(0 -132)">
+                        <rect width="24" height="24" rx="2" transform="translate(362 174)" fill="#ededed"/>
+                        <rect width="96" height="24" rx="2" transform="translate(604 237)" fill="#ededed"/>
+                        <rect width="96" height="24" rx="2" transform="translate(747 237)" fill="#ededed"/>
+                        <rect width="96" height="24" rx="2" transform="translate(890 237)" fill="#ededed"/>
+                        <rect width="96" height="24" rx="2" transform="translate(1033 237)" fill="#ededed"/>
+                        <rect width="96" height="24" rx="2" transform="translate(1176 237)" fill="#ededed"/>
+                        <rect width="96" height="24" rx="2" transform="translate(1319 237)" fill="#ededed"/>
+                        <rect width="96" height="24" rx="2" transform="translate(1462 237)" fill="#ededed"/>
+                        <rect width="170" height="48" rx="2" transform="translate(362 225)" fill="#ededed"/>
+                        <rect width="159" height="32" rx="2" transform="translate(410 903)" fill="#ededed"/>
+                        <rect width="220" height="32" rx="2" transform="translate(700 903)" fill="#ededed"/>
+                        <rect width="94" height="32" rx="2" transform="translate(1033 903)" fill="#ededed"/>
+                        <rect width="143" height="32" rx="2" transform="translate(1321 903)" fill="#ededed"/>
+                        <rect width="151" height="21" rx="2" transform="translate(410 939)" fill="#ededed"/>
+                        <rect width="145" height="21" rx="2" transform="translate(700 939)" fill="#ededed"/>
+                        <rect width="133" height="21" rx="2" transform="translate(1033 939)" fill="#ededed"/>
+                        <rect width="151" height="21" rx="2" transform="translate(1321 939)" fill="#ededed"/>
+                        <rect width="24" height="24" rx="2" transform="translate(1165 174)" fill="#ededed"/>
+                        <rect width="24" height="24" rx="2" transform="translate(1403 174)" fill="#ededed"/>
+                        <rect width="284" height="24" rx="2" transform="translate(390 174)" fill="#ededed"/>
+                        <rect width="162" height="24" rx="2" transform="translate(1193 174)" fill="#ededed"/>
+                        <rect width="127" height="24" rx="2" transform="translate(1431 174)" fill="#ededed"/>
+                    </g>
+                    <text transform="translate(410 338)" fill="#161616" font-size="52"
+                          font-family="PT Sans, Arial, Helvetica, sans-serif" font-weight="700">
+                        <tspan x="0" y="60">Упс! Слишком много</tspan>
+                        <tspan x="0" y="100">запросов</tspan>
+                    </text>
+                    <text transform="translate(410 446)" fill="#161616" font-size="24"
+                          font-family="PT Sans, Arial, Helvetica, sans-serif">
+                        <tspan x="0" y="30">Мы заметили высокую активность с вашего адреса</tspan>
+                        <tspan x="0" y="62"><tspan class="ip"></tspan> Попробуйте зайти с другого устройства</tspan>
+                        <tspan x="0" y="90"> или браузера. Также вы всегда можете связаться</tspan>
+                        <tspan x="0" y="120">с нами по номеру <a fill="#008d80" xlink:href="tel://+74992151477"
+                                                                xlink:title="Позвонить в amulex.ru">+7 499 215-14-77</a>.</tspan>
+                    </text>
+                </g>
+            </svg>
+        </div>
+
+        <div class="background background--mobile">
+            <svg xmlns="http://www.w3.org/2000/svg" width="auto" height="100vh" viewBox="0 0 414 736">
+                <rect width="414" height="736" fill="none"/>
+                <g transform="translate(-352 -32)">
+                    <rect width="42" height="42" rx="2" transform="translate(714 42)" fill="#ededed"/>
+                    <rect width="42" height="42" rx="2" transform="translate(664 42)" fill="#ededed"/>
+                    <rect width="170" height="42" rx="2" transform="translate(362 42)" fill="#ededed"/>
+                </g>
+                <rect width="394" height="125" rx="16" transform="translate(10 591)" fill="#fff"/>
+                <path d="M16,4A12,12,0,0,0,4,16v93a12,12,0,0,0,12,12H378a12,12,0,0,0,12-12V16A12,12,0,0,0,378,4H16m0-4H378a16,16,0,0,1,16,16v93a16,16,0,0,1-16,16H16A16,16,0,0,1,0,109V16A16,16,0,0,1,16,0Z"
+                      transform="translate(10 591)" fill="#ededed"/>
+                <rect width="147" height="30" rx="2" transform="translate(34 627)" fill="#ededed"/>
+                <rect width="147" height="30" rx="2" transform="translate(225 627)" fill="#ededed"/>
+                <rect width="139" height="20" rx="2" transform="translate(34 660)" fill="#ededed"/>
+                <rect width="139" height="20" rx="2" transform="translate(225 660)" fill="#ededed"/>
+                <text transform="translate(10 269)" fill="#161616" font-size="42"
+                      font-family="PT Sans, Arial, Helvetica, sans-serif" font-weight="700">
+                    <tspan x="0" y="0">Упс! Слишком</tspan>
+                    <tspan x="0" y="39">много запросов</tspan>
+                </text>
+                <text transform="translate(10 335)" fill="#161616" font-size="20"
+                      font-family="PT Sans, Arial, Helvetica, sans-serif">
+                    <tspan x="0" y="30">Мы заметили высокую активность с вашего</tspan>
+                    <tspan x="0" y="62">адреса <tspan class="ip"></tspan> Попробуйте зайти с</tspan>
+                    <tspan x="0" y="90">другого устройства или браузера. Также </tspan>
+                    <tspan x="0" y="120">вы всегда можете связаться <a fill="#008d80" xlink:href="tel://+74992151477"
+                                                             xlink:title="Позвонить в amulex.ru">с нами</a>.</tspan>
+                </text>
+
+                <g transform="translate(-400 -60)">
+                    <rect width="242" height="56" rx="8" transform="translate(410 540)" fill="#d3d3d3"/>
+                    <rect width="56" height="56" rx="8" transform="translate(664 540)" fill="#d3d3d3"/>
+                </g>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<script>
+    setTimeout(() => {
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                document.querySelectorAll('.ip').forEach(e => e.innerHTML = data.ip + '.')
+            });
+    }, 1000);
+</script>
+
+</body>
+</html>
