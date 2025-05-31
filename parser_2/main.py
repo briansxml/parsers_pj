@@ -24,8 +24,8 @@ logging.basicConfig(
 
 # 📲 Telegram-уведомление
 def send_telegram_message(message):
-    token = '6927527203:AAHnOj-4ddQkgYb94FNfBcFiMJ02mZZHMcY'
-    chat_id = '451073723'
+    token = 'TOKEN'
+    chat_id = 'CHAT_ID'
     url = f"https://api.telegram.org/bot{token}/sendMessage"
     payload = {
         'chat_id': chat_id,
