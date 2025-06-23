@@ -82,6 +82,7 @@ def write_to_csv():
             '_CATEGORY_',
             '_NAME_',
             '_DESCRIPTION_',
+            '_IMAGE_',
             '_IMAGES_',
             '_ATTRIBUTES_',
             '_SKU_',
@@ -118,6 +119,7 @@ def write_to_csv():
                 f"Options: {', '.join([i.string.strip() for i in options.find_all('a')])}" if options else f"Options: None")
             print(f"Attributes: {', '.join(attr)}")
             print(f"Reference: {soup.find('span', {'itemprop': 'sku'}).string}")
+            print(f"Image: {soup.find('meta', {'property': 'og:image'})['content']}")
             print(f"Images: {', '.join(images)}")
             print(f"URL: {item_page_url}")
             print()
@@ -128,6 +130,7 @@ def write_to_csv():
                     data_json['breadcrumb']['links'][1]['title'],
                     data_json['page']['meta']['title'],
                     data_json['page']['meta']['description'],
+                    soup.find('meta', {'property': 'og:image'})['content'],
                     ', '.join(images),
                     '\n'.join(attr),
                     soup.find('span', {'itemprop': 'sku'}).string,

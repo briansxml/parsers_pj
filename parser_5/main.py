@@ -117,7 +117,7 @@ def get_ariarmaturen_ru():
                     try:
                         html_page = requests.post('https://www.ari-armaturen.com/ru/izdelija', headers=headers,
                                                   proxies=proxies,
-                                                 data=payload).json()
+                                                  data=payload).json()
                     except JSONDecodeError:
                         continue
                     soup_content = BeautifulSoup(html_page['html_content'], 'lxml')
@@ -147,7 +147,7 @@ def get_ariarmaturen_ru():
                             break
                         valve_list.append(base64.b64decode(html_valve.json()['table']).decode("utf-8"))
                     attr = [
-                        f"Данные изделия | {i.find_all('td')[0].string.replace(':', '')} | {i.find_all('td')[1].text}"
+                        f"Данные изделия | {i.find_all('td')[0].string.strip().replace(':', '') if i.find_all('td')[0].string else None} | {i.find_all('td')[1].string.strip() if i.find_all('td')[1].string else None}"
                         for i in soup_content.find('tbody').find_all('tr')]
 
                     valve_html = f'<table class="table table-striped"><thead><tr><th>Фигура</th><th>PN (НД)</th><th>DN (Ду)</th><th>Материал</th><th>Соединение</th><th>Форма</th><th>Температура / корпус</th></tr></thead><tbody>{"".join(valve_list)}</tbody></table>'
@@ -156,7 +156,7 @@ def get_ariarmaturen_ru():
                     for row in valve_soup.find('tbody').find_all('tr'):
                         parametrs = []
                         for parametr, name in zip(row.find_all('td')[:-1], valve_soup.find('thead').find_all('th')):
-                            parametrs.append(f"{name.string} | {parametr.string}")
+                            parametrs.append(f"{name.string.strip() if name.string else None} | {parametr.string.strip() if parametr.string else None}")
                         attr.append(f"Особенности изделия | Список клапанов | {' | '.join(parametrs)}")
 
                     checked_urls_data = []
@@ -166,11 +166,12 @@ def get_ariarmaturen_ru():
                                                   soup_content.find('div', id='Datenblätter').find('thead').find_all(
                                                       'th')):
                             if not parametr.find('a'):
-                                parametrs.append(f"{name.string} | {parametr.string}")
+                                parametrs.append(f"{name.string.strip() if name.string else None} | {parametr.string.strip() if parametr.string else None}")
                             else:
                                 if parametr.find('a')['href'] not in checked_urls_data:
-                                    parametrs.append(f"{name.string} | {parametr.find('a')['href']}")
-                                    checked_urls_data.append(parametr.find('a')['href'])
+                                    parametrs.append(
+                                    f"{name.string.strip() if name.string else None} | {parametr.find('a')['href'].strip() if parametr.find('a') else None}")
+                                    checked_urls_data.append(parametr.find('a')['href'].strip())
                                 else:
                                     parametrs = None
                         if parametrs:
@@ -183,11 +184,13 @@ def get_ariarmaturen_ru():
                                                   soup_content.find('div', id='Betriebsanleitungen').find(
                                                       'thead').find_all('th')):
                             if not parametr.find('a'):
-                                parametrs.append(f"{name.string} | {parametr.string}")
+                                parametrs.append(
+                                    f"{name.string.strip() if name.string else None} | {parametr.string.strip() if parametr.string else None}")
                             else:
                                 if parametr.find('a')['href'] not in checked_urls_instruction:
-                                    parametrs.append(f"{name.string} | {parametr.find('a')['href']}")
-                                    checked_urls_instruction.append(parametr.find('a')['href'])
+                                    parametrs.append(
+                                        f"{name.string.strip() if name.string else None} | {parametr.find('a')['href'].strip() if parametr.find('a') else None}")
+                                    checked_urls_instruction.append(parametr.find('a')['href'].strip())
                                 else:
                                     parametrs = None
                         if parametrs:
@@ -198,14 +201,15 @@ def get_ariarmaturen_ru():
                         for parametr, name in zip(row.find_all('td'),
                                                   soup_content.find('div', id='Prüfungen').find('thead').find_all(
                                                       'th')):
-                            parametrs.append(f"{name.string} | {parametr.string}")
+                            parametrs.append(f"{name.string.strip() if name.string else None} | {parametr.string.strip() if parametr.string else None}")
                         attr.append(f"Особенности изделия | Испытания и сертификация | {' | '.join(parametrs)}")
 
                     attr = [i.replace('\n', ' ') for i in attr]
                     images = [i['href'] for i in soup_header.find('div', class_='owl-carousel').find_all('a')]
 
                     if soup_content.find('div', {'id': 'Datenblätter'}).find('tbody').find('tr'):
-                        title = soup_content.find('div', {'id': 'Datenblätter'}).find('tbody').find('tr').find('td').string
+                        title = soup_content.find('div', {'id': 'Datenblätter'}).find('tbody').find('tr').find(
+                            'td').string
                     else:
                         title = soup_header.find('div', class_='col-md-12').find('h1').string
                     print(
@@ -361,7 +365,7 @@ def get_ariarmaturen():
                             break
                         valve_list.append(base64.b64decode(html_valve.json()['table']).decode("utf-8"))
                     attr = [
-                        f"Product data | {i.find_all('td')[0].string.replace(':', '')} | {i.find_all('td')[1].string}"
+                        f"Product data | {i.find_all('td')[0].string.strip().replace(':', '') if i.find_all('td')[0].string else None} | {i.find_all('td')[1].string.strip() if i.find_all('td')[1].string else None}"
                         for i in soup_content.find('tbody').find_all('tr')]
 
                     valve_html = f'<table class="table table-striped"><thead><tr><th>Figure</th><th>PN</th><th>DN</th><th>Material</th><th>Connection</th><th>Form</th><th>Temp./*body</th></tr></thead><tbody>{"".join(valve_list)}</tbody></table>'
@@ -370,7 +374,7 @@ def get_ariarmaturen():
                     for row in valve_soup.find('tbody').find_all('tr'):
                         parametrs = []
                         for parametr, name in zip(row.find_all('td')[:-1], valve_soup.find('thead').find_all('th')):
-                            parametrs.append(f"{name.string} | {parametr.string}")
+                            parametrs.append(f"{name.string.strip() if name.string else None} | {parametr.string.strip() if parametr.string else None}")
                         attr.append(f"Product details | Valve lists | {' | '.join(parametrs)}")
 
                     checked_urls_data = []
@@ -380,11 +384,11 @@ def get_ariarmaturen():
                                                   soup_content.find('div', id='Datenblätter').find('thead').find_all(
                                                       'th')):
                             if not parametr.find('a'):
-                                parametrs.append(f"{name.string} | {parametr.string}")
+                                parametrs.append(f"{name.string.strip() if name.string else None} | {parametr.string.strip() if parametr.string else None}")
                             else:
                                 if parametr.find('a')['href'] not in checked_urls_data:
-                                    parametrs.append(f"{name.string} | {parametr.find('a')['href']}")
-                                    checked_urls_data.append(parametr.find('a')['href'])
+                                    parametrs.append(f"{name.string.strip() if name.string else None} | {parametr.find('a')['href'].strip() if parametr.find('a') else None}")
+                                    checked_urls_data.append(parametr.find('a')['href'].strip())
                                 else:
                                     parametrs = None
                         if parametrs:
@@ -397,11 +401,11 @@ def get_ariarmaturen():
                                                   soup_content.find('div', id='Betriebsanleitungen').find(
                                                       'thead').find_all('th')):
                             if not parametr.find('a'):
-                                parametrs.append(f"{name.string} | {parametr.string}")
+                                parametrs.append(f"{name.string.strip() if name.string else None} | {parametr.string.strip() if parametr.string else None}")
                             else:
                                 if parametr.find('a')['href'] not in checked_urls_instruction:
-                                    parametrs.append(f"{name.string} | {parametr.find('a')['href']}")
-                                    checked_urls_instruction.append(parametr.find('a')['href'])
+                                    parametrs.append(f"{name.string.strip() if name.string else None} | {parametr.find('a')['href'].strip() if parametr.find('a') else None}")
+                                    checked_urls_instruction.append(parametr.find('a')['href'].strip())
                                 else:
                                     parametrs = None
                         if parametrs:
@@ -412,14 +416,15 @@ def get_ariarmaturen():
                         for parametr, name in zip(row.find_all('td'),
                                                   soup_content.find('div', id='Prüfungen').find('thead').find_all(
                                                       'th')):
-                            parametrs.append(f"{name.string} | {parametr.string}")
+                            parametrs.append(f"{name.string.strip() if name.string else None} | {parametr.string.strip() if parametr.string else None}")
                         attr.append(f"Product details | Tests and Certification | {' | '.join(parametrs)}")
 
                     attr = [i.replace('\n', ' ') for i in attr]
                     images = [i['href'] for i in soup_header.find('div', class_='owl-carousel').find_all('a')]
 
                     if soup_content.find('div', {'id': 'Datenblätter'}).find('tbody').find('tr'):
-                        title = soup_content.find('div', {'id': 'Datenblätter'}).find('tbody').find('tr').find('td').string
+                        title = soup_content.find('div', {'id': 'Datenblätter'}).find('tbody').find('tr').find(
+                            'td').string
                     else:
                         title = soup_header.find('div', class_='col-md-12').find('h1').string
                     print(
@@ -450,5 +455,9 @@ def get_ariarmaturen():
 
 
 if __name__ == '__main__':
+    if not os.path.isdir('categories'):
+        os.mkdir('categories')
+    if not os.path.isdir('subcategories'):
+        os.mkdir('subcategories')
     # get_ariarmaturen()
     get_ariarmaturen_ru()
