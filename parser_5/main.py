@@ -76,7 +76,9 @@ def get_ariarmaturen_ru():
             '_IMAGE_',
             '_IMAGES_',
             '_ATTRIBUTES_',
+            '_DOWNLOADS_',
             '_SKU_',
+            '_OPTIONS_',
             '_URL_')
         )
 
@@ -146,63 +148,59 @@ def get_ariarmaturen_ru():
                         if html_valve.status_code == 500:
                             break
                         valve_list.append(base64.b64decode(html_valve.json()['table']).decode("utf-8"))
-                    attr = [
-                        f"Данные изделия | {i.find_all('td')[0].string.strip().replace(':', '') if i.find_all('td')[0].string else None} | {i.find_all('td')[1].string.strip() if i.find_all('td')[1].string else None}"
-                        for i in soup_content.find('tbody').find_all('tr')]
+                    attr = []
+                    for pr in soup_content.find('tbody').find_all('tr'):
+                        if pr.find_all('td')[0].string and pr.find_all('td')[1].string:
+                            attr.append(
+                                f"Данные изделия | {pr.find_all('td')[0].string.strip().replace(':', '')} | {pr.find_all('td')[1].string.strip()}")
 
+                    options = []
                     valve_html = f'<table class="table table-striped"><thead><tr><th>Фигура</th><th>PN (НД)</th><th>DN (Ду)</th><th>Материал</th><th>Соединение</th><th>Форма</th><th>Температура / корпус</th></tr></thead><tbody>{"".join(valve_list)}</tbody></table>'
                     valve_soup = BeautifulSoup(valve_html, 'lxml')
 
                     for row in valve_soup.find('tbody').find_all('tr'):
-                        parametrs = []
                         for parametr, name in zip(row.find_all('td')[:-1], valve_soup.find('thead').find_all('th')):
-                            parametrs.append(f"{name.string.strip() if name.string else None} | {parametr.string.strip() if parametr.string else None}")
-                        attr.append(f"Особенности изделия | Список клапанов | {' | '.join(parametrs)}")
+                            if name.string and parametr.string and f"select|{name.string.strip()}|{parametr.string.strip()}|1|100|1|+|0.0000|+|0|+|0.00000000" not in options:
+                                options.append(f"select|{name.string.strip()}|{parametr.string.strip()}|1|100|1|+|0.0000|+|0|+|0.00000000")
 
+                    downloads = []
                     checked_urls_data = []
                     for row in soup_content.find('div', id='Datenblätter').find('tbody').find_all('tr'):
                         parametrs = []
-                        for parametr, name in zip(row.find_all('td'),
-                                                  soup_content.find('div', id='Datenblätter').find('thead').find_all(
-                                                      'th')):
+                        for parametr in row.find_all('td'):
                             if not parametr.find('a'):
-                                parametrs.append(f"{name.string.strip() if name.string else None} | {parametr.string.strip() if parametr.string else None}")
+                                parametrs.append(parametr.string.strip() if parametr.string else '')
                             else:
                                 if parametr.find('a')['href'] not in checked_urls_data:
-                                    parametrs.append(
-                                    f"{name.string.strip() if name.string else None} | {parametr.find('a')['href'].strip() if parametr.find('a') else None}")
+                                    parametrs.append(parametr.find('a')['href'].strip())
                                     checked_urls_data.append(parametr.find('a')['href'].strip())
                                 else:
                                     parametrs = None
-                        if parametrs:
-                            attr.append(f"Особенности изделия | Технические паспорта | {' | '.join(parametrs)}")
+                            if parametrs and len(parametrs) == 3:
+                                downloads.append(' | '.join(parametrs))
 
                     checked_urls_instruction = []
                     for row in soup_content.find('div', id='Betriebsanleitungen').find('tbody').find_all('tr'):
                         parametrs = []
-                        for parametr, name in zip(row.find_all('td'),
-                                                  soup_content.find('div', id='Betriebsanleitungen').find(
-                                                      'thead').find_all('th')):
+                        for parametr in row.find_all('td'):
                             if not parametr.find('a'):
-                                parametrs.append(
-                                    f"{name.string.strip() if name.string else None} | {parametr.string.strip() if parametr.string else None}")
+                                parametrs.append(parametr.string.strip() if parametr.string else '')
                             else:
                                 if parametr.find('a')['href'] not in checked_urls_instruction:
-                                    parametrs.append(
-                                        f"{name.string.strip() if name.string else None} | {parametr.find('a')['href'].strip() if parametr.find('a') else None}")
+                                    parametrs.append(parametr.find('a')['href'].strip())
                                     checked_urls_instruction.append(parametr.find('a')['href'].strip())
                                 else:
                                     parametrs = None
-                        if parametrs:
-                            attr.append(f"Особенности изделия | Инструкция по эксплуатации | {' | '.join(parametrs)}")
+                        if parametrs and len(parametrs) == 3:
+                            downloads.append(' | '.join(parametrs))
 
                     for row in soup_content.find('div', id='Prüfungen').find('tbody').find_all('tr'):
                         parametrs = []
-                        for parametr, name in zip(row.find_all('td'),
-                                                  soup_content.find('div', id='Prüfungen').find('thead').find_all(
-                                                      'th')):
-                            parametrs.append(f"{name.string.strip() if name.string else None} | {parametr.string.strip() if parametr.string else None}")
-                        attr.append(f"Особенности изделия | Испытания и сертификация | {' | '.join(parametrs)}")
+                        parametr = row.find('td')
+                        name = soup_content.find('div', id='Prüfungen').find('thead').find('th')
+                        if parametr and name:
+                            parametrs.append(f"{name.string.strip()} | {parametr.string.strip()}")
+                        attr.append(f"Особенности изделия | {' | '.join(parametrs)}")
 
                     attr = [i.replace('\n', ' ') for i in attr]
                     images = [i['href'] for i in soup_header.find('div', class_='owl-carousel').find_all('a')]
@@ -221,7 +219,9 @@ def get_ariarmaturen_ru():
                     print(f'Image: {images[0]}')
                     print(f'Images: {", ".join(images)}')
                     print(f"Attributes: {', '.join(attr)}")
+                    print(f"Downloads: {', '.join(downloads)}")
                     print(f'SKU: {k["pdb-id"]}')
+                    print(f'Options: {", ".join(options)}')
                     print(f'URL: https://www.ari-armaturen.com{k.find("a")["href"]}')
                     print()
 
@@ -234,7 +234,9 @@ def get_ariarmaturen_ru():
                             images[0],
                             ', '.join(images),
                             '\n'.join(attr),
+                            '\n'.join(downloads),
                             k["pdb-id"],
+                            '\n'.join(options),
                             f'https://www.ari-armaturen.com{k.find("a")["href"]}')
                         )
 
@@ -297,7 +299,9 @@ def get_ariarmaturen():
             '_IMAGE_',
             '_IMAGES_',
             '_ATTRIBUTES_',
+            '_DOWNLOADS_',
             '_SKU_',
+            '_OPTIONS_',
             '_URL_')
         )
 
@@ -364,60 +368,57 @@ def get_ariarmaturen():
                         if html_valve.status_code == 500:
                             break
                         valve_list.append(base64.b64decode(html_valve.json()['table']).decode("utf-8"))
-                    attr = [
-                        f"Product data | {i.find_all('td')[0].string.strip().replace(':', '') if i.find_all('td')[0].string else None} | {i.find_all('td')[1].string.strip() if i.find_all('td')[1].string else None}"
-                        for i in soup_content.find('tbody').find_all('tr')]
-
+                    attr = []
+                    for pr in soup_content.find('tbody').find_all('tr'):
+                        if pr.find_all('td')[0].string and pr.find_all('td')[1].string:
+                            attr.append(f"Product data | {pr.find_all('td')[0].string.strip().replace(':', '')} | {pr.find_all('td')[1].string.strip()}")
+                    options = []
                     valve_html = f'<table class="table table-striped"><thead><tr><th>Figure</th><th>PN</th><th>DN</th><th>Material</th><th>Connection</th><th>Form</th><th>Temp./*body</th></tr></thead><tbody>{"".join(valve_list)}</tbody></table>'
                     valve_soup = BeautifulSoup(valve_html, 'lxml')
 
                     for row in valve_soup.find('tbody').find_all('tr'):
-                        parametrs = []
                         for parametr, name in zip(row.find_all('td')[:-1], valve_soup.find('thead').find_all('th')):
-                            parametrs.append(f"{name.string.strip() if name.string else None} | {parametr.string.strip() if parametr.string else None}")
-                        attr.append(f"Product details | Valve lists | {' | '.join(parametrs)}")
+                            if name.string and parametr.string and f"select|{name.string.strip()}|{parametr.string.strip()}|1|100|1|+|0.0000|+|0|+|0.00000000" not in options:
+                                options.append(f"select|{name.string.strip()}|{parametr.string.strip()}|1|100|1|+|0.0000|+|0|+|0.00000000")
 
+                    downloads = []
                     checked_urls_data = []
                     for row in soup_content.find('div', id='Datenblätter').find('tbody').find_all('tr'):
                         parametrs = []
-                        for parametr, name in zip(row.find_all('td'),
-                                                  soup_content.find('div', id='Datenblätter').find('thead').find_all(
-                                                      'th')):
+                        for parametr in row.find_all('td'):
                             if not parametr.find('a'):
-                                parametrs.append(f"{name.string.strip() if name.string else None} | {parametr.string.strip() if parametr.string else None}")
+                                parametrs.append(parametr.string.strip() if parametr.string else '')
                             else:
                                 if parametr.find('a')['href'] not in checked_urls_data:
-                                    parametrs.append(f"{name.string.strip() if name.string else None} | {parametr.find('a')['href'].strip() if parametr.find('a') else None}")
+                                    parametrs.append(parametr.find('a')['href'].strip())
                                     checked_urls_data.append(parametr.find('a')['href'].strip())
                                 else:
                                     parametrs = None
-                        if parametrs:
-                            attr.append(f"Product details | Data sheets | {' | '.join(parametrs)}")
+                            if parametrs and len(parametrs) == 3:
+                                downloads.append(' | '.join(parametrs))
 
                     checked_urls_instruction = []
                     for row in soup_content.find('div', id='Betriebsanleitungen').find('tbody').find_all('tr'):
                         parametrs = []
-                        for parametr, name in zip(row.find_all('td'),
-                                                  soup_content.find('div', id='Betriebsanleitungen').find(
-                                                      'thead').find_all('th')):
+                        for parametr in row.find_all('td'):
                             if not parametr.find('a'):
-                                parametrs.append(f"{name.string.strip() if name.string else None} | {parametr.string.strip() if parametr.string else None}")
+                                parametrs.append(parametr.string.strip() if parametr.string else '')
                             else:
                                 if parametr.find('a')['href'] not in checked_urls_instruction:
-                                    parametrs.append(f"{name.string.strip() if name.string else None} | {parametr.find('a')['href'].strip() if parametr.find('a') else None}")
+                                    parametrs.append(parametr.find('a')['href'].strip())
                                     checked_urls_instruction.append(parametr.find('a')['href'].strip())
                                 else:
                                     parametrs = None
-                        if parametrs:
-                            attr.append(f"Product details | Operating instruction | {' | '.join(parametrs)}")
+                        if parametrs and len(parametrs) == 3:
+                            downloads.append(' | '.join(parametrs))
 
                     for row in soup_content.find('div', id='Prüfungen').find('tbody').find_all('tr'):
                         parametrs = []
-                        for parametr, name in zip(row.find_all('td'),
-                                                  soup_content.find('div', id='Prüfungen').find('thead').find_all(
-                                                      'th')):
-                            parametrs.append(f"{name.string.strip() if name.string else None} | {parametr.string.strip() if parametr.string else None}")
-                        attr.append(f"Product details | Tests and Certification | {' | '.join(parametrs)}")
+                        parametr = row.find('td')
+                        name = soup_content.find('div', id='Prüfungen').find('thead').find('th')
+                        if parametr and name:
+                            parametrs.append(f"{name.string.strip()} | {parametr.string.strip()}")
+                        attr.append(f"Product details | {' | '.join(parametrs)}")
 
                     attr = [i.replace('\n', ' ') for i in attr]
                     images = [i['href'] for i in soup_header.find('div', class_='owl-carousel').find_all('a')]
@@ -436,7 +437,9 @@ def get_ariarmaturen():
                     print(f'Image: {images[0]}')
                     print(f'Images: {", ".join(images)}')
                     print(f"Attributes: {', '.join(attr)}")
+                    print(f"Downloads: {', '.join(downloads)}")
                     print(f'SKU: {k["pdb-id"]}')
+                    print(f'Options: {", ".join(options)}')
                     print(f'URL: https://www.ari-armaturen.com{k.find("a")["href"]}')
                     print()
 
@@ -449,7 +452,9 @@ def get_ariarmaturen():
                             images[0],
                             ', '.join(images),
                             '\n'.join(attr),
+                            '\n'.join(downloads),
                             k["pdb-id"],
+                            '\n'.join(options),
                             f'https://www.ari-armaturen.com{k.find("a")["href"]}')
                         )
 
@@ -459,5 +464,5 @@ if __name__ == '__main__':
         os.mkdir('categories')
     if not os.path.isdir('subcategories'):
         os.mkdir('subcategories')
-    # get_ariarmaturen()
+    get_ariarmaturen()
     get_ariarmaturen_ru()
